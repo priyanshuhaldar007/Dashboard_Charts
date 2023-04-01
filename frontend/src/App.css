@@ -1,0 +1,13 @@
+.App .Controls{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+.App .Controls .cl{
+  display: flex;
+  flex-direction: row;
+}
+.App .graph{
+  scale: 0.75;
+}
