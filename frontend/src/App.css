@@ -9,5 +9,6 @@
   flex-direction: row;
 }
 .App .graph{
-  scale: 0.75;
+  scale: 0.90;
+  margin: auto;
 }
