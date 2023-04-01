@@ -23,7 +23,7 @@ function MakeDataFile(data) {
 
 app.get("/getData", (req, res) => {
   let s = req.query.key;
-  s = s.slice(1, 5);
+  s = s.slice(1, -1);
   console.log(s);
   axios
     .request({

@@ -13,25 +13,26 @@ import {
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 function App() {
+  const [Symbol, setSymbol] = useState("");
   const [DataDate, setDataDate] = useState("");
   const [APIData, setAPIData] = useState([]);
   const [GraphData, setGraphData] = useState([]);
 
   useEffect(() => {
-    axios('http://localhost:5000/getData?key="MSFT"', {
-      method: "GET",
-      mode: "no-cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-      credentials: "same-origin",
-    }).then((response) => {
-      console.log(response.data.values[0]);
-      setDataDate(response.data.Date);
-      setAPIData(response.data.values);
-    });
+    // axios('http://localhost:5000/getData?key="MSFT"', {
+    //   method: "GET",
+    //   mode: "no-cors",
+    //   headers: {
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Content-Type": "application/json",
+    //   },
+    //   withCredentials: true,
+    //   credentials: "same-origin",
+    // }).then((response) => {
+    //   console.log(response.data.values[0]);
+    //   setDataDate(response.data.Date);
+    //   setAPIData(response.data.values);
+    // });
   }, []);
 
   function setData(s) {
@@ -61,6 +62,25 @@ function App() {
         break;
     }
     // console.log(GraphData);
+  }
+
+  function fetchData(){
+    let query = 'http://localhost:5000/getData?key="' + Symbol+'"';
+    // console.log(query);
+    setGraphData([]);
+    axios(query, {
+      method: "GET",
+      mode: "no-cors",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+      credentials: "same-origin",
+    }).then((response) => {
+      setDataDate(response.data.Date);
+      setAPIData(response.data.values);
+    });
   }
 
   const data = {
@@ -103,7 +123,7 @@ function App() {
           <span>{DataDate}</span>
         </div>
         <div className="cr">
-          <div className="input" placeholder="Symbol"></div>
+          <input type="text" placeholder="Symbol" value={Symbol} onChange={(e)=>setSymbol(e.target.value)}/>
           <select
             onChange={(e) => {
               setData(e.target.value);
@@ -123,7 +143,7 @@ function App() {
       <div className="graph">
         <Line data={data} options={options}></Line>
       </div>
-      <button>Refresh</button>
+      <button onClick={fetchData}>Refresh</button>
     </div>
   );
 }
