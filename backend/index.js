@@ -13,21 +13,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 let API_KEY=process.env.API_key
-// const options = {
-//   method: "GET",
-//   url: "https://alpha-vantage.p.rapidapi.com/query",
-//   params: {
-//     interval: "5min",
-//     function: "TIME_SERIES_INTRADAY",
-//     symbol: "MSFT",
-//     datatype: "json",
-//     output_size: "compact",
-//   },
-//   headers: {
-//     "X-RapidAPI-Key": "749c95fcb7msh27547906c4a540ap1ba189jsn58b452be5d47",
-//     "X-RapidAPI-Host": "alpha-vantage.p.rapidapi.com",
-//   },
-// };
 
 function MakeDataFile(data) {
   fs.writeFile("data.json", JSON.stringify(data), (err) => {
