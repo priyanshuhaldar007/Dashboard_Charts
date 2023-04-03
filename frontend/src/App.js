@@ -1,6 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { Line, getDatasetAtEvent } from "react-chartjs-2";
+import { Line, getDatasetAtEvent,legend } from "react-chartjs-2";
 import axios from "axios";
 import {
   Chart as ChartJS,
@@ -15,6 +15,7 @@ ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 function App() {
   const [Symbol, setSymbol] = useState("");
   const [DataDate, setDataDate] = useState("");
+  const [DropDown, setDropDown] = useState("Select Value");
   const [APIData, setAPIData] = useState([]);
   const [GraphData, setGraphData] = useState([]);
 
@@ -64,10 +65,12 @@ function App() {
     // console.log(GraphData);
   }
 
-  function fetchData(){
-    let query = 'http://localhost:5000/getData?key="' + Symbol+'"';
+  function fetchData() {
+   setSymbol(Symbol.toUpperCase());
+    let query = 'http://localhost:5000/getData?key="' + Symbol + '"';
     // console.log(query);
     setGraphData([]);
+    setDropDown("Select Value");
     axios(query, {
       method: "GET",
       mode: "no-cors",
@@ -79,6 +82,7 @@ function App() {
       credentials: "same-origin",
     }).then((response) => {
       setDataDate(response.data.Date);
+      console.log(response.data.values);
       setAPIData(response.data.values);
     });
   }
@@ -87,8 +91,9 @@ function App() {
     labels: APIData.map((data) => data.Time),
     datasets: [
       {
+        label:'API data',
         data: GraphData,
-        backgroundColor: "transparent",
+        // backgroundColor: "transparent",
         borderColor: "#f26c6d",
         pointBorderColor: "red",
         pointBorderWidth: 2,
@@ -96,9 +101,33 @@ function App() {
       },
     ],
   };
+  // const data = {
+  //   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange","Pink"],
+  //   datasets: [
+  //     {
+  //       label: "# of Votes",
+  //       data: [12, 19, 3, 5,  3],
+  //       borderWidth: 1,
+  //       pointBorderColor:"red",
+  //     },
+  //     {
+  //       label: "of Votes",
+  //       data: [, , , , 3, 5,9],
+  //       borderWidth: 1,
+  //       pointBorderColor:"blue",
+  //     },
+  //   ],
+  // };
   const options = {
     plugins: {
-      legend: true,
+      legend: {
+        display:true,
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart'
+      }
     },
     scales: {
       x: {
@@ -117,33 +146,54 @@ function App() {
 
   return (
     <div className="App">
-      <div className="Controls">
-        <div className="cl">
-          <span>Date:&nbsp;</span>
-          <span>{DataDate}</span>
-        </div>
-        <div className="cr">
-          <input type="text" placeholder="Symbol" value={Symbol} onChange={(e)=>setSymbol(e.target.value)}/>
-          <select
-            onChange={(e) => {
-              setData(e.target.value);
+      <header className="cl">
+        <span>Date:&nbsp;</span>
+        <span>{DataDate}</span>
+      </header>
+      <main>
+        <form className="cr">
+          <section>
+            <label>Enter a symbol:</label>
+            <input
+              type="text"
+              className="input-box"
+              placeholder="Symbol"
+              value={Symbol}
+              onChange={(e) => setSymbol(e.target.value)}
+            />
+          </section>
+          <section>
+            <label>Select mode:</label>
+            <select
+              className="dropdown-select"
+              onChange={(e) => {
+                setDropDown(e.target.value);
+                setData(e.target.value);
+              }}
+            >
+              <option value="Select Value" defaultValue>
+                Select Value
+              </option>
+              <option value="Open">Open</option>
+              <option value="Close">Close</option>
+              <option value="High">High</option>
+              <option value="Low">Low</option>
+              <option value="Volume">Volume</option>
+            </select>
+          </section>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              fetchData();
             }}
           >
-            <option value="Select Value" defaultValue>
-              Select Value
-            </option>
-            <option value="Open">Open</option>
-            <option value="Close">Close</option>
-            <option value="High">High</option>
-            <option value="Low">Low</option>
-            <option value="Volume">Volume</option>
-          </select>
+            Fetch Data
+          </button>
+        </form>
+        <div className="graph">
+          <Line className="myChart" data={data} options={options}></Line>
         </div>
-      </div>
-      <div className="graph">
-        <Line data={data} options={options}></Line>
-      </div>
-      <button onClick={fetchData}>Refresh</button>
+      </main>
     </div>
   );
 }

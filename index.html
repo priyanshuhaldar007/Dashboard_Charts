@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- <div class="App">
+        <header>
+            <h1>Graph</h1>
+        </header>
+      <div class="Controls">
+        <div class="cl">
+          <span>Date:&nbsp;</span>
+          <span> 2023-03-31</span>
+        </div>
+        <div class="cr">
+          <input type="text" placeholder="Symbol" />
+          <select>
+            <option value="Select Value" defaultValue>Select Value</option>
+            <option value="Open">Open</option>
+            <option value="Close">Close</option>
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+            <option value="Volume">Volume</option>
+          </select>
+        </div>
+      </div>
+      <div class="graph">
+        <canvas id="myChart"></canvas>
+      </div>
+      <button>Refresh</button>
+    </div> -->
+    <header>
+      <h1>My Webpage</h1>
+    </header>
+    <main>
+      <form>
+        <label for="input-box">Enter a value:</label>
+        <input type="text" id="input-box" name="input-box" /><br /><br />
+        <label for="dropdown-select">Select an option:</label>
+        <select id="dropdown-select" name="dropdown-select">
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option></select
+        ><br /><br />
+        <input
+          type="button"
+          value="Refresh"
+          onclick="refreshGraph()"
+        /><br /><br />
+      </form>
+      <div id="graph">
+        <canvas id="myChart"></canvas>
+      </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const ctx = document.getElementById("myChart");
+
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: [
+            "Red",
+            "Blue",
+            "Yellow",
+            "Green",
+            "Purple",
+            "Orange",
+            "Pink",
+          ],
+          datasets: [
+            {
+              label: "# of Votes",
+              data: [12, 19, 3, 5, 3],
+              borderWidth: 1,
+            },
+            {
+              label: "of Votes",
+              data: [, , , , 3, 5, 9],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: true,
+              position: "bottom",
+            },
+            title: {
+              display: true,
+              text: "Chart.js Line Chart",
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
