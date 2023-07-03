@@ -63,7 +63,7 @@ app.get("/getData", (req, res) => {
         valArr[i].Time = timeData;
         resData.values.push(valArr[i]);
       }
-
+      resData.values.reverse()
       MakeDataFile(resData); // writing the data to the file
 
       res.send(resData); // sending response
